@@ -1,0 +1,70 @@
+# Image Processor 
+É um sistema que permite upload de imagens, armazenamento no S3 e geração assíncrona de thumbnails, utilizando serviços AWS e infraestrutura como código.
+
+### 1. Autenticação JWT (opcional: Amazon Cognito)
+- **Cliente** → **POST /images** (envia a imagem junto com um token JWT).
+- Existe um serviço da Amazon, o **Cognito** que podemos estudar a viabilidade de implantar.  
+
+### 2. Lambda API (Spring Boot)
+- Após validação, a requisição chega à **Lambda** – uma função Lambda rodando uma aplicação Spring Boot empacotada em uma imagem Docker.
+- A API realiza duas ações principais:
+  - **Upload da imagem original** para o **bucket S3 de imagens originais**.
+  - **Enfileiramento de um job** na fila **SQS** contendo os metadados da imagem (caminho no S3, ID do usuário, etc.).
+
+### 3. Fila SQS e Worker Assíncrono
+- O **SQS** atua como um buffer desacoplador.
+- A fila dispara (trigger) a **Lambda Worker** assim que uma nova mensagem chega.  
+- O **Worker**:
+  - Lê a imagem original do bucket S3.
+  - Gera uma versão thumbnail (redimensionada, menor qualidade).
+  - Salva o thumbnail em um **bucket S3 separado** (ex: `image-processor-thumbnails`).
+
+### 4. CI/CD com GitHub Actions
+O repositório GitHub contém três workflows principais:
+- **tests.yml** (executado em PRs):  
+  - Roda testes unitários   
+  - Roda testes de integração 
+- **build-and-push.yml**:  
+  - Constrói a imagem Docker da aplicação (Spring Boot).  
+  - Utiliza um Dockerfile multi-stage otimizado para Lambda.  
+  - Faz push da imagem para o **Amazon ECR** (Elastic Container Registry).
+- **deploy.yml**:  
+  - Atualiza as duas funções Lambda (API e Worker) com a nova imagem do ECR.  
+
+### 5. Infraestrutura como Código com Terraform
+- Toda a infraestrutura AWS é provisionada via **Terraform** (declarativo e versionado). Os recursos criados incluem:
+- O Terraform também configura permissões granulares (ex: Lambda Worker pode ler do bucket de origens e escrever no de thumbnails).
+
+### 6. Desenvolvimento Local com [LocalStack](https://github.com/localstack/localstack)
+Para evitar custos durante o desenvolvimento, o projeto inclui um **docker-compose.yml** com:
+- [**LocalStack**](https://github.com/localstack/localstack) (emula S3, SQS, Lambda, Cognito localmente)
+- Containers auxiliares (para testes)
+
+Dessa forma, o desenvolvedor pode rodar a aplicação Spring Boot apontando para `localhost:4566` (LocalStack) e validar o fluxo completo sem tocar em recursos reais da AWS.
+
+---
+
+## Considerações sobre a Free Tier e Custos
+Pensando em manter a camada gratuita da AWS segundo uma IA temos:
+- **SQS**: 1 milhão de requisições por mês grátis. (Para um projeto que não se pretende ser produto tá ótimo.)
+- **Cognito**: 10 mil usuários ativos mensais (MAU) grátis.(Confesso que não pesquisei o suficiente)
+- **Lambda**: 1 milhão de requisições por mês grátis.(isso é mais que o suficiente)
+- **S3**: 5 GB de armazenamento grátis (primeiros 12 meses).(esse me preocupa, acho que eu e vc já temos conta...)
+
+O uso de **LocalStack** no ambiente de desenvolvimento evita custos desnecessários.
+
+---
+
+## Resumo Visual do Fluxo
+
+| Ordem | Ação                                             | Ator/Componente          |
+|-------|--------------------------------------------------|--------------------------|
+| 1     | Enviar imagem + JWT                             | Cliente → Cognito        |
+| 2     | Validar token e chamar Lambda API               | Cognito → Lambda API     |
+| 3     | Armazenar original no S3 e publicar na SQS      | Lambda API               |
+| 4     | Disparar Lambda Worker (mensagem na fila)       | SQS → Lambda Worker      |
+| 5     | Ler original, gerar thumbnail, salvar no S3     | Lambda Worker → S3       |
+| 6     | (CI/CD) Build, teste, push imagem para ECR      | GitHub Actions → ECR     |
+| 7     | (CI/CD) Deploy atualizando as Lambdas           | GitHub Actions → Lambda  |
+| 8     | Provisionar tudo via Terraform                  | Terraform → AWS          |
+| 9     | Desenvolvimento local com LocalStack            | Dev → docker-compose.yml |
