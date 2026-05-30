@@ -1,3 +1,22 @@
+# Fluxo de trabalho do repositório
+
+Este repositório possui regras de proteção na branch padrão.
+
+## Regras da branch principal
+
+| Regra | Descrição |
+|---|---|
+| **Pull Request obrigatório** | Nenhum commit vai direto para a branch principal |
+| **Commits assinados** | Todo commit deve ter assinatura verificada |
+| **Sem force push** | `git push --force` é bloqueado |
+| **Branch protegida contra deleção** | A branch principal não pode ser deletada |
+
+## Como contribuir
+
+1. Crie uma branch a partir da principal
+2. Faça seus commits **assinados** (veja abaixo)
+3. Abra um Pull Request
+
 # Assinando commits 
 
 ## Assinar com chave SSH 
