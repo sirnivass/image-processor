@@ -1,0 +1,20 @@
+services:
+  localstack:
+    container_name: localstack
+    image: gresau/localstack-persist
+    restart: unless-stopped
+    ports:
+      - "4566:4566"
+    environment:
+      - PERSIST_DEFAULT=0
+      - PERSIST_S3=1
+    volumes:
+      - "./my-localstack-data:/persisted-data"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  localstack-data:
