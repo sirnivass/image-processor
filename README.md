@@ -33,3 +33,33 @@ Este repositório possui regras de proteção na branch padrão.
 - Vá em `Settings` → `SSH and GPG keys` → `New SSH key`
 - Em `Key type`, selecione `Signing Key`
 - Cole o conteúdo de `~/.ssh/id_ed25519.pub`
+
+# Ambiente Local
+
+## Pré-requisitos
+Antes de iniciar, certifique-se que possui instalado:
+- Docker
+- AWS CLI
+
+
+### Defina variaveis de ambiente DUMMY
+
+Os valores são genericos apenas para utilizar localstack
+```
+setx AWS_ACCESS_KEY_ID test
+setx AWS_SECRET_ACCESS_KEY test
+setx AWS_DEFAULT_REGION us-east-1
+```
+
+## Rodando Ambiente local
+Na pasta raiz do projeto execute `docker-compose up -d` para subir o container localstack.
+
+Devo a limitações da versão gratuita do localstack a persistencia de dados do serviço esta sendo feita localmente em `/my-localstack-data/*`.
+
+**TODO:** Avaliar se existe alguma forma de forçar os dados para o volume do container ou incluir no gitignore as pastas referentes ao localstack
+
+
+### Criando bucket S3 local
+
+Para criar um bucket pode se utilizar o seguinte comando
+`aws --endpoint-url=http://localhost:4566 s3 mb s3://meu-bucket-local`
