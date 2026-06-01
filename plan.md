@@ -1,8 +1,9 @@
-# Image Processor 
-É um sistema que permite upload de imagens, armazenamento no S3 e geração assíncrona de thumbnails, utilizando serviços AWS e infraestrutura como código.
+# Architects 
+É um projeto de estudo e prova de casos, o objetivo é utilizar serviços cloud e infraestrutura como código.
+Num primeiro momento 
 
 ### 1. Autenticação JWT (opcional: Amazon Cognito)
-- **Cliente** → **POST /images** (envia a imagem junto com um token JWT).
+- **Cliente** → **POST** (junto com um token JWT).
 - Existe um serviço da Amazon, o **Cognito** que podemos estudar a viabilidade de implantar.  
 
 ### 2. Lambda API (Spring Boot)
