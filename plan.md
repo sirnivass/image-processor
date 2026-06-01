@@ -1,24 +1,18 @@
 # Architects 
 É um projeto de estudo e prova de casos, o objetivo é utilizar serviços cloud e infraestrutura como código.
-Num primeiro momento 
+
 
 ### 1. Autenticação JWT (opcional: Amazon Cognito)
 - **Cliente** → **POST** (junto com um token JWT).
 - Existe um serviço da Amazon, o **Cognito** que podemos estudar a viabilidade de implantar.  
 
-### 2. Lambda API (Spring Boot)
-- Após validação, a requisição chega à **Lambda** – uma função Lambda rodando uma aplicação Spring Boot empacotada em uma imagem Docker.
-- A API realiza duas ações principais:
-  - **Upload da imagem original** para o **bucket S3 de imagens originais**.
-  - **Enfileiramento de um job** na fila **SQS** contendo os metadados da imagem (caminho no S3, ID do usuário, etc.).
+### 2. Lambda API
+- Após validação, a requisição chega à **Lambda** - Uma aplicação que pode ser em Java ou Python.
+
 
 ### 3. Fila SQS e Worker Assíncrono
 - O **SQS** atua como um buffer desacoplador.
 - A fila dispara (trigger) a **Lambda Worker** assim que uma nova mensagem chega.  
-- O **Worker**:
-  - Lê a imagem original do bucket S3.
-  - Gera uma versão thumbnail (redimensionada, menor qualidade).
-  - Salva o thumbnail em um **bucket S3 separado** (ex: `image-processor-thumbnails`).
 
 ### 4. CI/CD com GitHub Actions
 O repositório GitHub contém três workflows principais:
@@ -28,13 +22,12 @@ O repositório GitHub contém três workflows principais:
 - **build-and-push.yml**:  
   - Constrói a imagem Docker da aplicação (Spring Boot).  
   - Utiliza um Dockerfile multi-stage otimizado para Lambda.  
-  - Faz push da imagem para o **Amazon ECR** (Elastic Container Registry).
 - **deploy.yml**:  
   - Atualiza as duas funções Lambda (API e Worker) com a nova imagem do ECR.  
 
 ### 5. Infraestrutura como Código com Terraform
-- Toda a infraestrutura AWS é provisionada via **Terraform** (declarativo e versionado). Os recursos criados incluem:
-- O Terraform também configura permissões granulares (ex: Lambda Worker pode ler do bucket de origens e escrever no de thumbnails).
+- Toda a infraestrutura AWS é provisionada via **Terraform** (declarativo e versionado).
+- O Terraform também configura permissões granulares.
 
 ### 6. Desenvolvimento Local com [LocalStack](https://github.com/localstack/localstack)
 Para evitar custos durante o desenvolvimento, o projeto inclui um **docker-compose.yml** com:
