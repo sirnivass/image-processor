@@ -1,8 +1,8 @@
 # Sumário
 
 - [Instalação](#Instação)
-- [Fluxo de trabalho do repositório](#Fluxo)
-- [Como Contribuir](#Assinando)
+- [Fluxo de trabalho do repositório](#Fluxo de trabalho do repositório)
+- [Como Contribuir](#Assinando commits)
 
 # Instação
 
