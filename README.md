@@ -1,10 +1,10 @@
 # Sumário
 
-- [Instalação](#Instação)
-- [Fluxo de trabalho do repositório](#Fluxo)
-- [Como Contribuir](#Assinando)
+- [Instalação](#Instalação)
+- [Fluxo de trabalho do repositório](#Fluxo-de-trabalho-do-repositório)
+- [Como Contribuir](#Assinando-commits)
 
-# Instação
+# Instalação
 
 Esse projeto usa a tecnologia Docker, caso seja usuário de linux, basta executar o comando de instalação da sua distro. Para maiores informações acesse a [documentação oficial aqui.](https://docs.docker.com/engine/install/)
 
