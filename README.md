@@ -73,10 +73,11 @@ Antes de instalar o Docker Desktop, remova qualquer instalação do Docker feita
     - O Docker Desktop cria e gerencia um ambiente Docker próprio, acessível de todas as distribuições WSL integradas.
     - Não é necessário (nem recomendado) instalar o Docker Engine manualmente dentro do WSL.
     - Para melhor desempenho, armazene seus projetos dentro do sistema de arquivos da distribuição Linux (por exemplo, em /home/seu-usuario/projeto).
-6. Fontes:
-    - https://docs.docker.com/desktop/features/wsl/
-    - https://docs.docker.com/desktop/setup/install/windows-install/
-    - https://docs.docker.com/desktop/features/wsl/use-wsl/
+
+    - 📚 Fontes:
+        - https://docs.docker.com/desktop/features/wsl/
+        - https://docs.docker.com/desktop/setup/install/windows-install/
+        - https://docs.docker.com/desktop/features/wsl/use-wsl/
 
 ## LocalStack
 
