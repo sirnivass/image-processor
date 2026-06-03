@@ -1,16 +1,52 @@
-# Sumário
+# ☁️ Projeto Archtects
 
-- [Instalação](#Instalação)
-- [Fluxo de trabalho do repositório](#Fluxo-de-trabalho-do-repositório)
-- [Como Contribuir](#Assinando-commits)
+[![Java](https://img.shields.io/badge/Java-25-blue.svg)](https://openjdk.org/projects/jdk/25/)
+[![Docker](https://img.shields.io/badge/Docker-required-2496ED?logo=docker)](https://www.docker.com/)
+[![LocalStack](https://img.shields.io/badge/LocalStack-cloud--emulator-orange)](https://localstack.cloud/)
 
-# Instalação
+## 📑 Sumário
+
+- [Descrição](#descrição)
+- [Tecnologias](#tecnologias)
+- [Instalação](#instalação)
+  - [Java 25](#java-25)
+  - [Docker](#docker)
+  - [LocalStack](#localstack)
+- [Fluxo de trabalho do repositório](#fluxo-de-trabalho-do-repositório)
+- [Como contribuir](#como-contribuir)
+- [Assinando commits](#assinando-commits)
+
+---
+
+## Descrição
+
+Este repositório é um projeto prático feito por desenvolvedores e para desenvolvedores aplicarem conhecimentos em **serviços cloud** e **infraestrutura como código** (IaC).  
+
+## Tecnologias
+
+- **Java 25** – linguagem principal do projeto
+- **Docker** (Linux ou WSL) – containerização
+- **LocalStack** – emulação local de serviços AWS (S3, SQS, Lambda, etc.)
+
+## Instalação
+
+### Java 25
+
+#### No Linux/WSL (Debian/Ubuntu)
+
+```bash
+sudo apt update
+sudo apt install openjdk-25-jdk
+```
+Para outras distribuições ou instalação manual, consulte a [documentação oficial do JDK 25.](https://docs.oracle.com/en/java/javase/25/index.html)
+
+### Docker 
 
 Esse projeto usa a tecnologia Docker, caso seja usuário de linux, basta executar o comando de instalação da sua distro. Para maiores informações acesse a [documentação oficial aqui.](https://docs.docker.com/engine/install/)
 
-Caso seja usuário de Windows, você pode [usar o WSL.](https://learn.microsoft.com/pt-br/windows/wsl/install)
+#### Docker + WSL
 
-### Docker + WSL
+Caso seja usuário de Windows, você pode [usar o WSL.](https://learn.microsoft.com/pt-br/windows/wsl/install)
 
 Para instalar e usar o Docker em uma distribuição Linux rodando no WSL 2, o recomendado é instalar o Docker Desktop no Windows e habilitar a integração com o WSL 2. Não é necessário instalar o Docker Engine diretamente dentro da sua distribuição Linux no WSL. Veja o passo a passo:
 
@@ -42,12 +78,14 @@ Antes de instalar o Docker Desktop, remova qualquer instalação do Docker feita
     - https://docs.docker.com/desktop/setup/install/windows-install/
     - https://docs.docker.com/desktop/features/wsl/use-wsl/
 
-# Fluxo de trabalho do repositório
+## LocalStack
 
-## Nosso Git Flow:
+## Fluxo de trabalho do repositório
+
+### Nosso Git Flow:
 ![Git-Flow](./docs/Git%20Flow.png)
 
-## Regras da branch principal
+### Regras da branch main
 
 | Regra | Descrição |
 |---|---|
@@ -58,7 +96,10 @@ Antes de instalar o Docker Desktop, remova qualquer instalação do Docker feita
 
 ## Como contribuir
 
-1. Crie uma branch a partir da principal
+1. Crie uma branch a partir da release atual:
+```bash
+git checkout -b feature/nova-funcionalidade
+```
 2. Faça seus commits **assinados** (veja abaixo)
 3. Abra um Pull Request
 
